@@ -139,17 +139,23 @@ public class PersistenceProviderResolverHolder {
 						}
 						for ( String s : names ) {
 							@SuppressWarnings( "unchecked" )
-							Class<? extends PersistenceProvider> providerClass = (Class<? extends PersistenceProvider>) cl.loadClass( s );
-							WeakReference<Class<? extends PersistenceProvider>> reference
-									= new WeakReference<Class<? extends PersistenceProvider>>(providerClass);
+							
+							
+							Class<? extends PersistenceProvider> providerClass = null;
+							System.out.println("Persistence Proverders: " + s);
 							//keep Hibernate atop
 							if ( s.endsWith( "HibernatePersistence" ) && resolverClasses.size() > 0 ) {
+								providerClass = (Class<? extends PersistenceProvider>) cl.loadClass( s );
+								
+								WeakReference<Class<? extends PersistenceProvider>> reference
+										= new WeakReference<Class<? extends PersistenceProvider>>(providerClass);
 								WeakReference<Class<? extends PersistenceProvider>> movedReference = resolverClasses.get( 0 );
 								resolverClasses.add( 0, reference );
 								resolverClasses.add( movedReference );
 							}
 							else {
-								resolverClasses.add( reference );
+								System.out.println("Ignore Persistence Proverders: " + s);
+//								resolverClasses.add( reference );
 							}
 						}
 					}
